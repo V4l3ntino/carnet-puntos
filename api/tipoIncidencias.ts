@@ -3,7 +3,7 @@ import { TipoIncidencia } from "@/interfaces/interfaces"
 export const getAllTipoIncidencias = async(): Promise<TipoIncidencia[] | undefined> => {
 
     try {
-        const result = await fetch('http://localhost:3000/api/tipo-incidencia')
+        const result = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tipo-incidencia`)
 
         if(result.ok != true){
             throw new Error()
