@@ -2,8 +2,8 @@
 import { getAllAlumnos } from "@/api/alumnosCrud";
 import { getAllIncidencia } from "@/api/incidenciasCrud";
 import { getAllProfesores } from "@/api/profesoresCrud";
-import { getAllTipoIncidencias } from "@/api/tipoIncidencias";
-import FullFeaturedCrudGrid from "@/components/table";
+import { getAllTipoIncidencias } from "@/api/tipoIncidenciasCrud";
+import FullFeaturedCrudGridIncidencia from "@/components/tableIncidencias";
 import { Alumno, Incidencia, IncidenciaTable, Profesor, TipoIncidencia } from "@/interfaces/interfaces";
 import { Typography } from "@mui/material";
 
@@ -16,7 +16,7 @@ const Incidencias = async() => {
         alumno: item.alumnoProfile.user.profile.fullName,
         creador: item.user.profile?.fullName,
         descripcion: item.descripcion,
-        tipoIncidencia: item.tipoIncidencia.descripcion,
+        tipoIncidencia: item.tipoIncidencia?.descripcion,
         created_at: new Date(item.created_at)
     }) )
 
@@ -26,7 +26,7 @@ const Incidencias = async() => {
     
     return ( 
         <>
-            <FullFeaturedCrudGrid  
+            <FullFeaturedCrudGridIncidencia  
             INCIDENCIAS={INCIDENCIAS_TABLE ? INCIDENCIAS_TABLE : []} 
             TIPO_INCIDENCIAS={TIPO_INCIDENCIAS ? TIPO_INCIDENCIAS : []}
             ALUMNOS={ALUMNOS ? ALUMNOS : []}

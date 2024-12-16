@@ -91,10 +91,17 @@ export interface User {
 
   
   export interface TipoIncidencia {
-    id: number;
+    id: string;
     descripcion: string;
     created_at: string;
     grado: Grado;
+  }
+  
+  export interface TipoIncidenciaTable {
+    id: string;
+    descripcion: string;
+    created_at: string;
+    grado: string;
   }
   
 

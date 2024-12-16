@@ -13,7 +13,7 @@ export const saveIncidencia = async(incidencia: IncidenciaTable, creadores: Prof
             descripcion: incidencia.descripcion,
             tipoIncidencia: TIPO_INCIDENCIA!.id.toString(),
         }
-
+        console.log(INCIDENCIA)
         const result = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incidencia`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},

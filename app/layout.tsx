@@ -29,6 +29,13 @@ const NAVIGATION: Navigation = [
     segment: 'incidencias',
     title: 'Incidencias',
     icon: <AssignmentIcon />,
+    children: [
+      {
+        segment: 'tiposIncidencias',
+        title: 'Tipos Incidencias',
+        icon: '',
+      }
+    ]
   },
 ];
 
