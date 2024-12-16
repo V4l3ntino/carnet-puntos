@@ -26,15 +26,20 @@ const NAVIGATION: Navigation = [
     icon: <PersonIcon />,
   },
   {
-    segment: 'incidencias',
+    segment: `incidencias`,
     title: 'Incidencias',
     icon: <AssignmentIcon />,
     children: [
       {
-        segment: 'tiposIncidencias',
-        title: 'Tipos Incidencias',
+        segment: ``,
+        title: 'Incidencias CRUD',
         icon: '',
-      }
+      },
+      {
+        segment: `tiposIncidencias`,
+        title: 'Configurar los tipos de Incidencia',
+        icon: '',
+      },
     ]
   },
 ];

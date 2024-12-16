@@ -8,7 +8,7 @@ interface Params {
 }
 
 const UserDetail: React.FC<Params> = async({params}) => {
-    const { id } = params;
+    const { id } = await params;
 
     const USER = await get0neUser(id)
     return ( 
