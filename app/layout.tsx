@@ -50,6 +50,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="en" data-toolpad-color-scheme="light" suppressHydrationWarning>
+      <head><script src="https://cdn.tailwindcss.com"></script></head>
       <body>
         
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>

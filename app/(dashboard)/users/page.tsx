@@ -1,17 +1,17 @@
-import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import FullFeaturedCrudGrid from '@/components/tableIncidencias';
+import { getAllUser } from '@/api/userCrud';
+import React from 'react';
+import TableUsers from '@/components/tableUsers';
 
 
-export default function OrdersPage() {
-  
+export default async function Users() {
+
+  const USUARIOS = await getAllUser()
 
   return (
     <>
-      <Typography>
-        List of Users
-      </Typography>
-      
+      <TableUsers USUARIOS={USUARIOS ? USUARIOS : []}/>
     </>
 
   );
