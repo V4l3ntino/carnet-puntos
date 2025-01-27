@@ -1,4 +1,5 @@
 
+"use client"
 import { getAllAlumnos } from "@/api/alumnosCrud";
 import { getAllIncidencia } from "@/api/incidenciasCrud";
 import { getAllProfesores } from "@/api/profesoresCrud";

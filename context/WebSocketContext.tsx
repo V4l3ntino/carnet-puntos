@@ -1,0 +1,21 @@
+import { IncidenciaEmmit } from '@/interfaces/interfaces';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { io, Socket } from "socket.io-client";
+
+// Define el tipo del contexto
+interface WebSocketContextType {
+  socket: Socket | null;
+  isConnected: boolean;
+  newIncidencia: (data:IncidenciaEmmit) => void
+}
+
+export const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);
+
+export const useWebSocket = () => {
+    const context = useContext(WebSocketContext);
+    if (!context) {
+      throw new Error("useWebSocket debe usarse dentro de un WebSocketProvider");
+    }
+    return context;
+  };
+  

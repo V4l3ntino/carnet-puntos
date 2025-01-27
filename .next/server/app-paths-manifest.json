@@ -1,7 +1,3 @@
 {
-  "/(dashboard)/users/[id]/page": "app/(dashboard)/users/[id]/page.js",
-  "/(dashboard)/page": "app/(dashboard)/page.js",
-  "/(dashboard)/incidencias/page": "app/(dashboard)/incidencias/page.js",
-  "/(dashboard)/users/page": "app/(dashboard)/users/page.js",
-  "/(dashboard)/incidencias/tiposIncidencias/page": "app/(dashboard)/incidencias/tiposIncidencias/page.js"
+  "/(dashboard)/incidencias/page": "app/(dashboard)/incidencias/page.js"
 }

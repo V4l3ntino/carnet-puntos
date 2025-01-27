@@ -64,6 +64,14 @@ export interface User {
     tipoIncidencia: TipoIncidencia;
   }
 
+  export interface IncidenciaEmmit {
+    user_id: string,
+    id: string,
+    alumno_id: string,
+    descripcion: string,
+    tipoIncidencia: string,
+  }
+
   export interface IncidenciaTable {
     id: string;
     descripcion: string

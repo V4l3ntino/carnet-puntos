@@ -1,4 +1,4 @@
-// File: /home/valen/Desktop/front/app/(dashboard)/incidencias/page.tsx
+// File: /home/valen/Documentos/carnet-puntos/app/(dashboard)/incidencias/page.tsx
 import * as entry from '../../../../../app/(dashboard)/incidencias/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
