@@ -29,8 +29,9 @@ import {
   randomArrayItem,
 } from '@mui/x-data-grid-generator';
 import { Autocomplete, TextField } from '@mui/material';
-import { Alumno, IncidenciaTable, Profesor, TipoIncidencia } from '@/interfaces/interfaces';
+import { Alumno, IncidenciaEmmit, IncidenciaTable, Profesor, TipoIncidencia } from '@/interfaces/interfaces';
 import { deleteIncidencia, saveIncidencia } from '@/api/incidenciasCrud';
+import { useWebSocket } from '@/context/WebSocketContext';
 
 const roles = ['Market', 'Finance', 'Development'];
 const randomRole = () => {
@@ -114,6 +115,7 @@ type Props = {
 
 export default function FullFeaturedCrudGridIncidencia({INCIDENCIAS, TIPO_INCIDENCIAS, ALUMNOS, PROFESORES}: Props) {
 
+  const [incidenciasTable, setIncidenciasTable] = React.useState<IncidenciaTable[]>(INCIDENCIAS)
   // const initialRows: GridRowsProp = [
   //   {
   //     id: randomId(),
@@ -123,7 +125,35 @@ export default function FullFeaturedCrudGridIncidencia({INCIDENCIAS, TIPO_INCIDE
   //     tipoIncidencia: "Mal comportamiento"
   //   }
   // ];
-  const initialRows: GridRowsProp = [...INCIDENCIAS];
+  const {newIncidencia, incidencias} = useWebSocket()
+
+  React.useEffect(() => {
+    const INCIDENCIAS_TABLE: IncidenciaTable[] | undefined = incidencias?.map((item) => ({
+      id: item.id.toString(),
+      alumno: item.alumnoProfile.user.profile.fullName,
+      creador: item.user.profile?.fullName,
+      descripcion: item.descripcion,
+      tipoIncidencia: item.tipoIncidencia?.descripcion,
+      created_at: new Date(item.created_at)
+    }) )
+    setRows(INCIDENCIAS_TABLE);
+    console.log("cambio",INCIDENCIAS_TABLE)
+  },[incidencias])
+
+//   const {incidencias} = useWebSocket()
+
+//   const INCIDENCIAS_TABLE: IncidenciaTable[] | undefined = incidencias?.map((item) => ({
+//     id: item.id.toString(),
+//     alumno: item.alumnoProfile.user.profile.fullName,
+//     creador: item.user.profile?.fullName,
+//     descripcion: item.descripcion,
+//     tipoIncidencia: item.tipoIncidencia?.descripcion,
+//     created_at: new Date(item.created_at)
+// }) )
+//   console.log(INCIDENCIAS_TABLE)
+    
+
+  const initialRows: GridRowsProp = [...incidenciasTable];
 
   const [rows, setRows] = React.useState(initialRows);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
@@ -168,14 +198,32 @@ export default function FullFeaturedCrudGridIncidencia({INCIDENCIAS, TIPO_INCIDE
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     
     if(updatedRow.creador != "" && updatedRow.alumno != "" && updatedRow.tipoIncidencia != "" ){
-        saveIncidencia({
-          id: updatedRow.id,
-          descripcion: updatedRow.descripcion,
-          created_at: updatedRow.created_at,
-          creador: updatedRow.creador,
-          alumno: updatedRow.alumno,
-          tipoIncidencia: updatedRow.tipoIncidencia
-      }, PROFESORES, ALUMNOS, TIPO_INCIDENCIAS)
+      //   saveIncidencia({
+      //     id: updatedRow.id,
+      //     descripcion: updatedRow.descripcion,
+      //     created_at: updatedRow.created_at,
+      //     creador: updatedRow.creador,
+      //     alumno: updatedRow.alumno,
+      //     tipoIncidencia: updatedRow.tipoIncidencia
+      // }, PROFESORES, ALUMNOS, TIPO_INCIDENCIAS)
+        try {
+            const CREADOR: Profesor | undefined = PROFESORES.find((item) => item.user.profile.fullName == updatedRow.creador)
+            const ALUMNO: Alumno | undefined = ALUMNOS.find((item) => item.user.profile.fullName == updatedRow.alumno)
+            const TIPO_INCIDENCIA: TipoIncidencia | undefined = TIPO_INCIDENCIAS.find((item) => item.descripcion == updatedRow.tipoIncidencia)
+    
+            const INCIDENCIA: IncidenciaEmmit = {
+                user_id: CREADOR!.user.id,
+                id: updatedRow.id,
+                alumno_id: ALUMNO!.idea,
+                descripcion: updatedRow.descripcion,
+                tipoIncidencia: TIPO_INCIDENCIA!.id.toString(),
+            }    
+            newIncidencia(INCIDENCIA)
+
+        } catch (error) {
+            throw Error()
+        }
+      
       return updatedRow;
     }
     alert("La incidencia no se ha guardado porque falta por completar el creador y el alumno")

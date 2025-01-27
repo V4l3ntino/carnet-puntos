@@ -1,4 +1,5 @@
-import { IncidenciaEmmit } from '@/interfaces/interfaces';
+"use client"
+import { Alumno, Incidencia, IncidenciaEmmit, Profesor, TipoIncidencia } from '@/interfaces/interfaces';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io, Socket } from "socket.io-client";
 
@@ -6,7 +7,11 @@ import { io, Socket } from "socket.io-client";
 interface WebSocketContextType {
   socket: Socket | null;
   isConnected: boolean;
-  newIncidencia: (data:IncidenciaEmmit) => void
+  newIncidencia: (data:IncidenciaEmmit) => void;
+  incidencias: Incidencia[]
+  tipo_incidencias: TipoIncidencia[]
+  alumnos: Alumno[]
+  profesores: Profesor[]
 }
 
 export const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);

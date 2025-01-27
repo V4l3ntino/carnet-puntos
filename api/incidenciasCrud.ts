@@ -1,7 +1,6 @@
 import { useWebSocket } from "@/context/WebSocketContext"
 import { Alumno, Incidencia, IncidenciaEmmit, IncidenciaTable, Profesor, TipoIncidencia, User } from "@/interfaces/interfaces"
 export const saveIncidencia = async(incidencia: IncidenciaTable, creadores: Profesor[], alumnos: Alumno[], tipoIncidencias: TipoIncidencia[]):Promise<void> => {
-    const {newIncidencia} = useWebSocket()
     try {
         const CREADOR: Profesor | undefined = creadores.find((item) => item.user.profile.fullName == incidencia.creador)
         const ALUMNO: Alumno | undefined = alumnos.find((item) => item.user.profile.fullName == incidencia.alumno)
@@ -15,7 +14,6 @@ export const saveIncidencia = async(incidencia: IncidenciaTable, creadores: Prof
             tipoIncidencia: TIPO_INCIDENCIA!.id.toString(),
         }
         console.log(INCIDENCIA)
-        newIncidencia(INCIDENCIA)
         const result = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/incidencia`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},

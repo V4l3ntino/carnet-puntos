@@ -3,12 +3,16 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { WebSocketContext } from "./WebSocketContext";
-import { IncidenciaEmmit } from "@/interfaces/interfaces";
+import { Alumno, Incidencia, IncidenciaEmmit, Profesor, TipoIncidencia } from "@/interfaces/interfaces";
 
 export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const socketIo: Socket = io ("http://localhost:3000")
     const [socket, setSocket] = useState<Socket | null>(null);
     const [isConnected, setIsConnected] = useState(false);
+    const [incidencias, setIncidencias] = useState<Incidencia[]>([])  
+    const [tipo_incidencias, setTipo_incidencias] = useState<TipoIncidencia[]>([])  
+    const [alumnos, setAlumnos] = useState<Alumno[]>([])
+    const [profesores, setProfesores] = useState<Profesor[]>([])
 
     const newIncidencia = (data: IncidenciaEmmit) => {
         if (socket) {
@@ -27,6 +31,10 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       // Maneja la conexión
       socketInstance.on("connect", () => {
         console.log("Conectado al servidor WebSocket");
+        socketInstance.emit('getIncidencias');
+        socketInstance.emit('getProfesores');
+        socketInstance.emit('getTipoIncidencias');
+        socketInstance.emit('getAlumnos');
         setIsConnected(true);
       });
   
@@ -35,6 +43,23 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         console.log("Desconectado del servidor WebSocket");
         setIsConnected(false);
       });
+
+      socketInstance.on("incidenciasList", (data:Incidencia[]) => {
+        setIncidencias(prevState => [...data])  
+      })
+
+      socketInstance.on("profesoresList", (data:Profesor[]) => {
+        setProfesores(data)
+      })
+
+      socketInstance.on("alumnosList", (data:Alumno[]) => {
+        setAlumnos(data)
+      })
+
+      socketInstance.on("tipoInciddenciasList", (data:TipoIncidencia[]) => {
+        setTipo_incidencias(data)
+      })
+
   
       return () => {
         // Limpia la conexión al desmontar
@@ -42,7 +67,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       };
     }, []);
     return (
-        <WebSocketContext.Provider value={{socket, isConnected, newIncidencia}}>
+        <WebSocketContext.Provider value={{socket, isConnected, newIncidencia, incidencias, alumnos, profesores, tipo_incidencias}}>
             { children }
         </WebSocketContext.Provider>
     )

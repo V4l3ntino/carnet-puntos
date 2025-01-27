@@ -5,14 +5,15 @@ import { getAllIncidencia } from "@/api/incidenciasCrud";
 import { getAllProfesores } from "@/api/profesoresCrud";
 import { getAllTipoIncidencias } from "@/api/tipoIncidenciasCrud";
 import FullFeaturedCrudGridIncidencia from "@/components/tableIncidencias";
+import { useWebSocket } from "@/context/WebSocketContext";
 import { Alumno, Incidencia, IncidenciaTable, Profesor, TipoIncidencia } from "@/interfaces/interfaces";
 import { Typography } from "@mui/material";
 
-const Incidencias = async() => {
+const Incidencias = () => {
+    const {incidencias, alumnos, profesores, tipo_incidencias} = useWebSocket()
+    
 
-
-    const INCIDENCIAS: Incidencia[] | undefined = await getAllIncidencia()
-    const INCIDENCIAS_TABLE: IncidenciaTable[] | undefined = INCIDENCIAS?.map((item) => ({
+    const INCIDENCIAS_TABLE: IncidenciaTable[] | undefined = incidencias?.map((item) => ({
         id: item.id.toString(),
         alumno: item.alumnoProfile.user.profile.fullName,
         creador: item.user.profile?.fullName,
@@ -21,18 +22,27 @@ const Incidencias = async() => {
         created_at: new Date(item.created_at)
     }) )
 
-    const TIPO_INCIDENCIAS: TipoIncidencia[]|undefined = await getAllTipoIncidencias()
-    const ALUMNOS: Alumno[] | undefined = await getAllAlumnos()
-    const PROFESORES: Profesor[] | undefined = await getAllProfesores()
+    const TIPO_INCIDENCIAS: TipoIncidencia[]|undefined = tipo_incidencias
+    const ALUMNOS: Alumno[] | undefined = alumnos
+    const PROFESORES: Profesor[] | undefined = profesores
+
+    console.log("incidenca", INCIDENCIAS_TABLE)
+    // console.log("alumnos", ALUMNOS)
+    // console.log("profesores", PROFESORES)
     
     return ( 
         <>
-            <FullFeaturedCrudGridIncidencia  
-            INCIDENCIAS={INCIDENCIAS_TABLE ? INCIDENCIAS_TABLE : []} 
-            TIPO_INCIDENCIAS={TIPO_INCIDENCIAS ? TIPO_INCIDENCIAS : []}
-            ALUMNOS={ALUMNOS ? ALUMNOS : []}
-            PROFESORES={PROFESORES ? PROFESORES : []}
-            />
+            {/* Condición para asegurar que INCIDENCIAS_TABLE tiene datos */}
+            {INCIDENCIAS_TABLE.length > 0 && ALUMNOS.length > 0 && TIPO_INCIDENCIAS.length > 0 && PROFESORES.length > 0 ? (
+                <FullFeaturedCrudGridIncidencia
+                    INCIDENCIAS={INCIDENCIAS_TABLE}
+                    TIPO_INCIDENCIAS={TIPO_INCIDENCIAS ? TIPO_INCIDENCIAS : []}
+                    ALUMNOS={ALUMNOS ? ALUMNOS : []}
+                    PROFESORES={PROFESORES ? PROFESORES : []}
+                />
+            ) : (
+                <Typography>Renderizando...</Typography>
+            )}
         </>
      );
 }
