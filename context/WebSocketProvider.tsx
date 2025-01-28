@@ -13,6 +13,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const [tipo_incidencias, setTipo_incidencias] = useState<TipoIncidencia[]>([])  
     const [alumnos, setAlumnos] = useState<Alumno[]>([])
     const [profesores, setProfesores] = useState<Profesor[]>([])
+    const [incidenciaOne, setIncidenciaOne] = useState<Incidencia>()
 
     const newIncidencia = (data: IncidenciaEmmit) => {
         if (socket) {
@@ -60,6 +61,9 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setTipo_incidencias(data)
       })
 
+      socketInstance.on("incidencia", (data:Incidencia) => {
+        setIncidenciaOne(data)
+      })
   
       return () => {
         // Limpia la conexión al desmontar
@@ -67,7 +71,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       };
     }, []);
     return (
-        <WebSocketContext.Provider value={{socket, isConnected, newIncidencia, incidencias, alumnos, profesores, tipo_incidencias}}>
+        <WebSocketContext.Provider value={{socket, isConnected, newIncidencia, incidencias, alumnos, profesores, tipo_incidencias, incidenciaOne}}>
             { children }
         </WebSocketContext.Provider>
     )

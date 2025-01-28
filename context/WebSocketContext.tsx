@@ -12,6 +12,7 @@ interface WebSocketContextType {
   tipo_incidencias: TipoIncidencia[]
   alumnos: Alumno[]
   profesores: Profesor[]
+  incidenciaOne: Incidencia
 }
 
 export const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);

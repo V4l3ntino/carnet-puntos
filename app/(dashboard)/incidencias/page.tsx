@@ -25,15 +25,11 @@ const Incidencias = () => {
     const TIPO_INCIDENCIAS: TipoIncidencia[]|undefined = tipo_incidencias
     const ALUMNOS: Alumno[] | undefined = alumnos
     const PROFESORES: Profesor[] | undefined = profesores
-
-    console.log("incidenca", INCIDENCIAS_TABLE)
-    // console.log("alumnos", ALUMNOS)
-    // console.log("profesores", PROFESORES)
     
     return ( 
         <>
             {/* Condición para asegurar que INCIDENCIAS_TABLE tiene datos */}
-            {INCIDENCIAS_TABLE.length > 0 && ALUMNOS.length > 0 && TIPO_INCIDENCIAS.length > 0 && PROFESORES.length > 0 ? (
+            {INCIDENCIAS_TABLE.length > 0 && ALUMNOS.length > 0 && TIPO_INCIDENCIAS.length > 0 && PROFESORES.length > 0 || INCIDENCIAS_TABLE.length == 0 ? (
                 <FullFeaturedCrudGridIncidencia
                     INCIDENCIAS={INCIDENCIAS_TABLE}
                     TIPO_INCIDENCIAS={TIPO_INCIDENCIAS ? TIPO_INCIDENCIAS : []}

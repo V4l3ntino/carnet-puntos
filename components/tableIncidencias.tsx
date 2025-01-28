@@ -125,20 +125,51 @@ export default function FullFeaturedCrudGridIncidencia({INCIDENCIAS, TIPO_INCIDE
   //     tipoIncidencia: "Mal comportamiento"
   //   }
   // ];
-  const {newIncidencia, incidencias} = useWebSocket()
+  const {newIncidencia, incidenciaOne} = useWebSocket()
 
   React.useEffect(() => {
-    const INCIDENCIAS_TABLE: IncidenciaTable[] | undefined = incidencias?.map((item) => ({
-      id: item.id.toString(),
-      alumno: item.alumnoProfile.user.profile.fullName,
-      creador: item.user.profile?.fullName,
-      descripcion: item.descripcion,
-      tipoIncidencia: item.tipoIncidencia?.descripcion,
-      created_at: new Date(item.created_at)
-    }) )
-    setRows(INCIDENCIAS_TABLE);
-    console.log("cambio",INCIDENCIAS_TABLE)
-  },[incidencias])
+    // const INCIDENCIAS_TABLE: IncidenciaTable[] | undefined = incidencias?.map((item) => ({
+    //   id: item.id.toString(),
+    //   alumno: item.alumnoProfile.user.profile.fullName,
+    //   creador: item.user.profile?.fullName,
+    //   descripcion: item.descripcion,
+    //   tipoIncidencia: item.tipoIncidencia?.descripcion,
+    //   created_at: new Date(item.created_at)
+    // }) )
+    // setRows(INCIDENCIAS_TABLE);
+    try {
+          
+      if(typeof incidenciaOne !== "undefined"){
+        const incidenciaOneTable = {
+          id: incidenciaOne?.id.toString(),
+          alumno: incidenciaOne?.alumnoProfile.user.profile.fullName,
+          creador: incidenciaOne?.user.profile.fullName,
+          descripcion: incidenciaOne?.descripcion,
+          tipoIncidencia: incidenciaOne?.tipoIncidencia.descripcion,
+          created_at: new Date(incidenciaOne?.created_at)
+        }
+        const lista = [...rows]
+        let isNew = true
+        lista.forEach((item) => {
+          if(item.id == incidenciaOneTable.id){
+            item.alumno = incidenciaOneTable.alumno
+            item.creador = incidenciaOneTable.creador
+            item.descripcion = incidenciaOneTable.descripcion
+            item.tipoIncidencia = incidenciaOneTable.tipoIncidencia
+            isNew = false
+          }
+        })
+        if(isNew){
+          lista.push(incidenciaOneTable)
+        }
+        setRows(lista)
+        console.log(lista)
+      }
+
+    } catch (error) {
+      throw error    
+    }
+  },[incidenciaOne])
 
 //   const {incidencias} = useWebSocket()
 
