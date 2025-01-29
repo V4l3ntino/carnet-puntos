@@ -8,11 +8,13 @@ interface WebSocketContextType {
   socket: Socket | null;
   isConnected: boolean;
   newIncidencia: (data:IncidenciaEmmit) => void;
+  deleteIncidencia: (id: string) => void;
   incidencias: Incidencia[]
   tipo_incidencias: TipoIncidencia[]
   alumnos: Alumno[]
   profesores: Profesor[]
-  incidenciaOne: Incidencia
+  incidenciaOne: Incidencia | undefined
+  incidenciaId: string
 }
 
 export const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);

@@ -30,7 +30,7 @@ import {
 } from '@mui/x-data-grid-generator';
 import { Autocomplete, TextField } from '@mui/material';
 import { Alumno, IncidenciaEmmit, IncidenciaTable, Profesor, TipoIncidencia } from '@/interfaces/interfaces';
-import { deleteIncidencia, saveIncidencia } from '@/api/incidenciasCrud';
+// import { deleteIncidencia, saveIncidencia } from '@/api/incidenciasCrud';
 import { useWebSocket } from '@/context/WebSocketContext';
 
 const roles = ['Market', 'Finance', 'Development'];
@@ -125,7 +125,7 @@ export default function FullFeaturedCrudGridIncidencia({INCIDENCIAS, TIPO_INCIDE
   //     tipoIncidencia: "Mal comportamiento"
   //   }
   // ];
-  const {newIncidencia, incidenciaOne} = useWebSocket()
+  const {newIncidencia, incidenciaOne, deleteIncidencia, incidenciaId} = useWebSocket()
 
   React.useEffect(() => {
     // const INCIDENCIAS_TABLE: IncidenciaTable[] | undefined = incidencias?.map((item) => ({
@@ -163,13 +163,19 @@ export default function FullFeaturedCrudGridIncidencia({INCIDENCIAS, TIPO_INCIDE
           lista.push(incidenciaOneTable)
         }
         setRows(lista)
-        console.log(lista)
       }
 
     } catch (error) {
       throw error    
     }
   },[incidenciaOne])
+
+  React.useEffect(() => {
+    if(incidenciaId !== ""){
+      const lista = rows.filter((item) => item.id !== incidenciaId)
+      setRows(lista)
+    }
+  },[incidenciaId])
 
 //   const {incidencias} = useWebSocket()
 
